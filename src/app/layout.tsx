@@ -15,14 +15,14 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-export default function RootLayout({children,}: Readonly<{children: React.ReactNode}>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang='en'>
       <body className={`${inter.className} antialiased`}>
         <Header />
-        <main className={inter.className}>
-        {children}
-        </main>
+        <main className={inter.className}>{children}</main>
       </body>
     </html>
   )

@@ -13,12 +13,12 @@ const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      // Обязательные базовые стили (по умолчанию)
+      
       "peer h-4 w-4 shrink-0 rounded-sm border border-zinc-900",
       "focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-      // Динамические стили
+     
       "data-[state=checked]:bg-zinc-900 data-[state=checked]:text-white",
-      // Пользовательские классы
+      
       className
     )}
     {...props}
