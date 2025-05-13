@@ -109,7 +109,7 @@ function Modal({ withIcon }: ModalProps) {
             </div>
             <DialogFooter className='justify-between flex w-full'>
               <DialogClose asChild>
-                <Button className='h-10 rounded-md border py-2 font-sans px-4 bg-white border-zinc-200 text-zinc-900'>
+                <Button className='h-10 rounded-md border py-2 px-4 bg-white border-zinc-200 text-zinc-900'>
                   Cancel
                 </Button>
               </DialogClose>

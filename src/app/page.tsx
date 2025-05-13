@@ -1,6 +1,6 @@
 'use client'
 import { Input } from '@/components/ui/input'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import Modal from '../components/ui/modal'
 import TaskPanel from '../components/ui/taskpanel'
 import { useAppStore } from '@/store/zustand.store'
@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     saveTasks()
-  }, [todoTasks, completedTasks, saveTasks])
+  }, [todoTasks, completedTasks])
 
   return (
     <div className='antialiased'>

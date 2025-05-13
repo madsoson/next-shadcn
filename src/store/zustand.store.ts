@@ -5,6 +5,7 @@ type AppState = {
   filterText: string
   todoTasks: Task[]
   completedTasks: Task[]
+
 }
 
 type StoreActions = {

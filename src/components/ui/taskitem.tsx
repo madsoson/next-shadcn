@@ -16,15 +16,14 @@ type TaskItemProps = {
     completed: boolean
   }
   onToggleComplete: (taskId: number) => void
-  onDeleteTask: () => void
+  onDeleteTask: (taskId: number, isCompleted: boolean) => void
 }
 
 const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
-  const deleteTask = useAppStore(state => state.deleteTask)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const confirmDelete = () => {
-    onDeleteTask()
+    onDeleteTask(task.id, task.completed)
     setIsModalOpen(false)
   }
 
