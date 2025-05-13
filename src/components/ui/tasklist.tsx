@@ -1,16 +1,28 @@
-import { TaskListProps } from '@/types/task'
+import { Task } from '@/types/task'
 import TaskItem from './taskitem'
 import Modal from './modal'
+import { useAppStore } from '@/store/zustand.store'
+
+export type TaskListProps = {
+  title: string
+  tasks: Task[]
+  onAddTask?: (title: string, description: string) => void
+  onToggleComplete: (taskId: number) => void
+  onDeleteTask: (taskId: number, isCompleted: boolean) => void
+  emptyMessage: string
+  subEmptyMessage: string
+}
 
 const TaskList = ({
   title,
   tasks,
   onAddTask,
-  onToggleComplete,
-  onDeleteTask,
   emptyMessage,
   subEmptyMessage,
 }: TaskListProps) => {
+  const toggleComplete = useAppStore(state => state.toggleComplete)
+  const deleteTask = useAppStore(state => state.deleteTask)
+
   return (
     <div
       className={
@@ -54,8 +66,8 @@ const TaskList = ({
             <TaskItem
               key={task.id}
               task={task}
-              onToggleComplete={() => onToggleComplete(task.id)}
-              onDeleteTask={() => onDeleteTask(task.id, task.completed)}
+              onToggleComplete={() => toggleComplete(task.id)}
+              onDeleteTask={() => deleteTask(task.id, task.completed)}
             />
           ))}
         </>

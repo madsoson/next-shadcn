@@ -1,40 +1,29 @@
 import { create } from 'zustand'
-import { Task, AppState } from '@/types/task'
+import { Task } from '@/types/task'
 
-type StoreActions = {
-  setIsModalOpen: (isOpen: boolean) => void
-  setIsConfirmOpen: (isOpen: boolean) => void
-  setFilterText: (text: string) => void
-  setTitle: (title: string) => void
-  setDescription: (desc: string) => void
-  addTask: (title: string, description: string) => void
-  deleteTask: (taskId: number, isCompleted: boolean) => void
-  toggleComplete: (taskId: number) => void
-  setTodoTasks: (tasks: Task[]) => void
-  setCompletedTasks: (tasks: Task[]) => void
-  setTaskToDelete: (task: Task | null) => void
+type AppState = {
+  filterText: string
+  todoTasks: Task[]
+  completedTasks: Task[]
 }
 
-export const useAppStore = create<AppState & StoreActions>(set => ({
-  isModalOpen: false,
-  isConfirmOpen: false,
+type StoreActions = {
+  setFilterText: (text: string) => void
+  addTask: (title: string, description?: string) => void
+  deleteTask: (taskId: number, isCompleted: boolean) => void
+  toggleComplete: (taskId: number) => void
+  loadTasks: () => void
+  saveTasks: () => void
+}
+
+export const useAppStore = create<AppState & StoreActions>((set, get) => ({
   todoTasks: [],
   completedTasks: [],
   filterText: '',
-  title: '',
-  description: '',
-  taskToDelete: null,
 
-  setIsModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
-  setIsConfirmOpen: (isOpen: boolean) => set({ isConfirmOpen: isOpen }),
-  setFilterText: (text: string) => set({ filterText: text }),
-  setTitle: (title: string) => set({ title }),
-  setDescription: (desc: string) => set({ description: desc }),
-  setTodoTasks: (tasks: Task[]) => set({ todoTasks: tasks }),
-  setCompletedTasks: (tasks: Task[]) => set({ completedTasks: tasks }),
-  setTaskToDelete: (task: Task | null) => set({ taskToDelete: task }),
+  setFilterText: text => set({ filterText: text }),
 
-  addTask: (title: string, description: string) =>
+  addTask: (title, description = '') =>
     set(state => ({
       todoTasks: [
         ...state.todoTasks,
@@ -47,49 +36,48 @@ export const useAppStore = create<AppState & StoreActions>(set => ({
       ],
     })),
 
-  deleteTask: (taskId: number, isCompleted: boolean) => {
+  deleteTask: (taskId, isCompleted) => {
     if (isCompleted) {
       set(state => ({
-        ...state,
         completedTasks: state.completedTasks.filter(task => task.id !== taskId),
       }))
     } else {
       set(state => ({
-        ...state,
         todoTasks: state.todoTasks.filter(task => task.id !== taskId),
       }))
     }
   },
 
-  toggleComplete: (taskId: number) =>
-    set(state => {
-      const taskInTodo = state.todoTasks.find(task => task.id === taskId)
-      const taskInCompleted = state.completedTasks.find(
-        task => task.id === taskId,
-      )
+  toggleComplete: taskId => {
+    const { todoTasks, completedTasks } = get()
+    const taskInTodo = todoTasks.find(task => task.id === taskId)
+    const taskInCompleted = completedTasks.find(task => task.id === taskId)
 
-      if (taskInTodo) {
-        return {
-          todoTasks: state.todoTasks.filter(task => task.id !== taskId),
-          completedTasks: [
-            ...state.completedTasks,
-            { ...taskInTodo, completed: true },
-          ],
-        }
-      }
+    if (taskInTodo) {
+      set({
+        todoTasks: todoTasks.filter(t => t.id !== taskId),
+        completedTasks: [...completedTasks, { ...taskInTodo, completed: true }],
+      })
+    } else if (taskInCompleted) {
+      set({
+        completedTasks: completedTasks.filter(t => t.id !== taskId),
+        todoTasks: [...todoTasks, { ...taskInCompleted, completed: false }],
+      })
+    }
+  },
 
-      if (taskInCompleted) {
-        return {
-          completedTasks: state.completedTasks.filter(
-            task => task.id !== taskId,
-          ),
-          todoTasks: [
-            ...state.todoTasks,
-            { ...taskInCompleted, completed: false },
-          ],
-        }
-      }
+  loadTasks: () => {
+    const savedTasks = localStorage.getItem('todoTasks')
+    const savedCompleted = localStorage.getItem('completedTasks')
+    set({
+      todoTasks: savedTasks ? JSON.parse(savedTasks) : [],
+      completedTasks: savedCompleted ? JSON.parse(savedCompleted) : [],
+    })
+  },
 
-      return state
-    }),
+  saveTasks: () => {
+    const { todoTasks, completedTasks } = get()
+    localStorage.setItem('todoTasks', JSON.stringify(todoTasks))
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks))
+  },
 }))

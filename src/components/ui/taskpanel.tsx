@@ -1,5 +1,6 @@
 import TaskList from './tasklist'
 import { useAppStore } from '@/store/zustand.store'
+import { Task } from '@/types/task'
 
 const TaskPanel = () => {
   const filterText = useAppStore(state => state.filterText)
@@ -9,14 +10,13 @@ const TaskPanel = () => {
   const deleteTask = useAppStore(state => state.deleteTask)
   const addTask = useAppStore(state => state.addTask)
 
-  
-    const filteredTodoTasks = todoTasks.filter(task =>
+  const filterTasks = (tasks: Task[]) =>
+    tasks.filter(task =>
       task.title.toLowerCase().includes(filterText.toLowerCase()),
     )
-  
-    const filteredCompletedTasks = completedTasks.filter(task =>
-      task.title.toLowerCase().includes(filterText.toLowerCase()),
-    )
+
+  const filteredTodoTasks = filterTasks(todoTasks)
+  const filteredCompletedTasks = filterTasks(completedTasks)
 
   return (
     <>

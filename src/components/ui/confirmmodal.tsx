@@ -1,4 +1,3 @@
-import { ConfirmProps } from '@/types/task'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
@@ -8,12 +7,16 @@ import {
 } from '@/components/ui/popover'
 import { PopoverClose } from '@radix-ui/react-popover'
 
+export type ConfirmProps = {
+  trigger: React.ReactNode
+  onCancel: () => void
+  onConfirm: () => void
+}
+
 const ConfirmModal = ({ onCancel, onConfirm, trigger }: ConfirmProps) => {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        {trigger}
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent
         align='end'
         side='bottom'
@@ -30,7 +33,7 @@ const ConfirmModal = ({ onCancel, onConfirm, trigger }: ConfirmProps) => {
             </Label>
           </div>
           <div className='flex justify-end gap-2'>
-            <PopoverClose>
+            <PopoverClose asChild>
               <Button
                 size='default'
                 className='border font-medium bg-white text-sm text-zinc-900'

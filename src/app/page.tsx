@@ -8,25 +8,19 @@ import { useAppStore } from '@/store/zustand.store'
 export default function Home() {
   const todoTasks = useAppStore(state => state.todoTasks)
   const completedTasks = useAppStore(state => state.completedTasks)
+  const loadTasks = useAppStore(state => state.loadTasks)
+  const saveTasks = useAppStore(state => state.saveTasks)
   const filterText = useAppStore(state => state.filterText)
-  const setFilterText = useAppStore(state => state.setFilterText)
-  const setTodoTasks = useAppStore(state => state.setTodoTasks)
-  const setCompletedTasks = useAppStore(state => state.setCompletedTasks)
+  const setFilterText = useAppStore(state => state.setFilterText) 
+
 
   useEffect(() => {
-    const savedTasks = localStorage.getItem('todoTasks')
-    const savedCompleted = localStorage.getItem('completedTasks')
-
-    if (savedTasks || savedCompleted) {
-      setTodoTasks(savedTasks ? JSON.parse(savedTasks) : [])
-      setCompletedTasks(savedCompleted ? JSON.parse(savedCompleted) : [])
-    }
-  }, [setTodoTasks, setCompletedTasks])
+    loadTasks()
+  }, [loadTasks])
 
   useEffect(() => {
-    localStorage.setItem('todoTasks', JSON.stringify(todoTasks))
-    localStorage.setItem('completedTasks', JSON.stringify(completedTasks))
-  }, [todoTasks, completedTasks])
+    saveTasks()
+  }, [todoTasks, completedTasks, saveTasks])
 
   return (
     <div className='antialiased'>

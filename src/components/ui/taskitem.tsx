@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import ConfirmModal from './confirmmodal'
-import { TaskItemProps } from '@/types/task'
 import Image from 'next/image'
 import icon from '@/images/trash.png'
 import * as React from 'react'
@@ -9,12 +8,24 @@ import { Checkbox } from '@radix-ui/react-checkbox'
 import { Check } from 'lucide-react'
 import { Button } from './button'
 
-const TaskItem = ({ task, onToggleComplete }: TaskItemProps) => {
+type TaskItemProps = {
+  task: {
+    id: number
+    title: string
+    description?: string
+    completed: boolean
+  }
+  onToggleComplete: (taskId: number) => void
+  onDeleteTask: () => void
+}
+
+const TaskItem = ({ task, onToggleComplete, onDeleteTask }: TaskItemProps) => {
   const deleteTask = useAppStore(state => state.deleteTask)
-  const setTaskToDelete = useAppStore(state => state.setTaskToDelete)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const confirmDelete = () => {
-    deleteTask(task.id, task.completed)
+    onDeleteTask()
+    setIsModalOpen(false)
   }
 
   return (
@@ -60,11 +71,11 @@ const TaskItem = ({ task, onToggleComplete }: TaskItemProps) => {
         )}
       </div>
       <ConfirmModal
-        onCancel={() => setTaskToDelete(null)}
+        onCancel={() => setIsModalOpen(false)}
         onConfirm={confirmDelete}
         trigger={
           <div
-            onClick={() => setTaskToDelete(task)}
+            onClick={() => setIsModalOpen(true)}
             className='min-w-8 w-8 h-8 rounded-md bg-red-600 hover:bg-red-600/90 flex items-center justify-center cursor-pointer'
           >
             <Image

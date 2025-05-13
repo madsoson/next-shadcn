@@ -1,4 +1,3 @@
-import { ModalProps } from '@/types/task'
 import { useAppStore } from '@/store/zustand.store'
 import { useState } from 'react'
 import * as React from 'react'
@@ -19,13 +18,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
+export type ModalProps = {
+  withIcon?: boolean
+}
+
 function Modal({ withIcon }: ModalProps) {
-  const title = useAppStore(state => state.title)
-  const description = useAppStore(state => state.description)
-  const setTitle = useAppStore(state => state.setTitle)
-  const setDescription = useAppStore(state => state.setDescription)
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+
   const addTask = useAppStore(state => state.addTask)
-  const setIsModalOpen = useAppStore(state => state.setIsModalOpen)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -33,7 +34,6 @@ function Modal({ withIcon }: ModalProps) {
     addTask(title, description)
     setTitle('')
     setDescription('')
-    setIsModalOpen(false)
   }
 
   return (
@@ -109,10 +109,7 @@ function Modal({ withIcon }: ModalProps) {
             </div>
             <DialogFooter className='justify-between flex w-full'>
               <DialogClose asChild>
-                <Button
-                  className='h-10 rounded-md border py-2 font-sans px-4 bg-white border-zinc-200 text-zinc-900'
-                  onClick={() => setIsModalOpen(false)}
-                >
+                <Button className='h-10 rounded-md border py-2 font-sans px-4 bg-white border-zinc-200 text-zinc-900'>
                   Cancel
                 </Button>
               </DialogClose>
