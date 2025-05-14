@@ -5,11 +5,9 @@ type AppState = {
   filterText: string
   todoTasks: Task[]
   completedTasks: Task[]
-
 }
 
 type StoreActions = {
-  setFilterText: (text: string) => void
   addTask: (title: string, description?: string) => void
   deleteTask: (taskId: number, isCompleted: boolean) => void
   toggleComplete: (taskId: number) => void
@@ -21,8 +19,6 @@ export const useAppStore = create<AppState & StoreActions>((set, get) => ({
   todoTasks: [],
   completedTasks: [],
   filterText: '',
-
-  setFilterText: text => set({ filterText: text }),
 
   addTask: (title, description = '') =>
     set(state => ({

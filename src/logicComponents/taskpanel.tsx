@@ -2,8 +2,11 @@ import TaskList from './tasklist'
 import { useAppStore } from '@/store/zustand.store'
 import { Task } from '@/types/task'
 
-const TaskPanel = () => {
-  const filterText = useAppStore(state => state.filterText)
+export type TaskPanelProps = {
+  filterText: string
+}
+
+const TaskPanel = ({ filterText }: TaskPanelProps) => {
   const todoTasks = useAppStore(state => state.todoTasks)
   const completedTasks = useAppStore(state => state.completedTasks)
   const toggleComplete = useAppStore(state => state.toggleComplete)

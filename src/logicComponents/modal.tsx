@@ -82,7 +82,7 @@ function Modal({ withIcon }: ModalProps) {
                 Task*
               </Label>
               <Input
-                className='w-full h-10 rounded-md border py-2 px-3 font-normal text-sm text-zinc-500'
+                className='w-full h-10 rounded-md border py-2 px-3 font-normal text-sm text-zinc-900 placeholder:text-zinc-500'
                 placeholder='Name of your task'
                 id='title'
                 required
@@ -100,7 +100,7 @@ function Modal({ withIcon }: ModalProps) {
                 Description
               </Label>
               <Input
-                className='w-full h-10 rounded-md border py-2 px-3 font-normal text-sm text-zinc-500'
+                className='w-full h-10 rounded-md border py-2 px-3 font-normal text-sm text-zinc-900 placeholder:text-zinc-500'
                 placeholder='Optional'
                 id='description'
                 value={description}

@@ -6,7 +6,6 @@ import * as React from 'react'
 import { useAppStore } from '@/store/zustand.store'
 import { Checkbox } from '@radix-ui/react-checkbox'
 import { Check } from 'lucide-react'
-import { Button } from './button'
 
 type TaskItemProps = {
   task: {
